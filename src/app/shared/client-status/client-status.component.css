@@ -1,0 +1,15 @@
+.client-status-icon-online{
+    color:rgb(148, 241, 148);
+}
+.client-status-icon-offline{
+    color:black;
+}
+.status-icon{
+    margin-right:10px;
+    /* font-size: xx-large; */
+}
+.status-spinner-container{
+    width:40px;
+    height: 40px;
+    margin-right:10px;
+}

@@ -1,0 +1,39 @@
+.temperature-color{
+    color:#C24641;
+}
+.humidity-color{
+    color:#357EC7;
+}
+.humidity, .temperature{
+    font-size: xx-large;
+}
+.temperature-wrapper, .humidity-wrapper{
+    width:154px;
+    min-height: 25px;
+}
+.chart-wrapper{
+    width:100%;
+}
+mat-card{
+    margin:10px;
+}
+mat-card-header{
+    /* background-color: #344249; */
+    border-radius: 5px;
+    padding-top:10px;
+    margin-bottom:15px;
+    /* color:orange; */
+}
+mat-icon{
+    color:white;
+}
+.target-item{
+    text-align: center;
+}
+.target-percentage{
+    font-size: xx-large;
+    /* color:orange; */
+}
+.target-miss{
+    color:orange;
+}

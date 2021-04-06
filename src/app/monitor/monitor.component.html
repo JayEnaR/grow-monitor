@@ -1,0 +1,69 @@
+<div fxLayoutAlign="center center" fxLayout="row">
+
+    <mat-card fxFlex="100" >
+        <mat-card-header>
+            <mat-card-title>Temperature</mat-card-title>
+            <mat-icon>thermostat</mat-icon>
+            <!-- <mat-card-subtitle>Temperature</mat-card-subtitle> -->
+        </mat-card-header>
+        <mat-card-content fxLayoutAlign="center">
+            <label class="temperature temperature-color">{{temperature}}°C</label>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card fxFlex="100" >
+        <mat-card-header>
+            <mat-card-title>Humidity</mat-card-title>
+            <mat-icon>opacity</mat-icon>
+            <!-- <mat-card-subtitle>Humidity</mat-card-subtitle> -->
+        </mat-card-header>
+        <mat-card-content fxLayoutAlign="center">
+            <label class="humidity humidity-color">{{humidity}}%</label>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div fxLayoutAlign="center center" fxLayout="row">
+    <mat-card fxFlex="100">
+        <mat-card-header>
+            <mat-card-title>Fluctuation</mat-card-title>
+            <mat-card-subtitle>In {{timeIntervals}} time frame(s)</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayoutAlign="center center">
+                <div *ngIf="chart" fxFlex="100">
+                    <canvas id="canvas">{{ chart }}</canvas>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div fxLayoutAlign="center center" fxLayout="row wrap" >
+    <mat-card fxFlex="31.6" fxFlex.md="31.2" fxFlex.sm="30" fxFlex.xs="100" *ngFor="let target of targetData">
+        <mat-card-header>
+            <mat-card-title>{{target.phase}} Phase</mat-card-title>
+            <mat-card-subtitle>Target Percentage</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayoutAlign="space-around center" fxLayout="row wrap">
+                <div class="target-item"  fxFlex.sm="100">
+                    <p class="temperature-color" fxLayoutAlign="center center"> 
+                        <mat-icon matTooltip="Temperature" matTooltipClass="tooltip">thermostat</mat-icon>
+                    </p>
+                    <span class="target-percentage" [ngClass]="{'target-miss': temperature < target.tempMin|| temperature > target.tempMax }">
+                        {{decimalRounder.roundNum((temperature / target.temperature) * 100, 1)}}%
+                    </span>
+                </div>
+                <div class="target-item"  fxFlex.sm="100">
+                    <p class="humidity-color" fxLayoutAlign="center center"> 
+                        <mat-icon matTooltip="Humidity" matTooltipClass="tooltip">opacity</mat-icon>
+                    </p>
+                    <span class="target-percentage" [ngClass]="{'target-miss': humidity < target.humMin|| humidity > target.humMax }">
+                        {{decimalRounder.roundNum((humidity / target.humidity) * 100, 1)}}%
+                    </span>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

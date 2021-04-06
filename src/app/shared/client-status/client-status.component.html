@@ -1,0 +1,7 @@
+<div fxLayoutAlign="center center" fxLayout="row" *ngIf="isOnline">
+    <mat-icon class="status-icon" matTooltip="Online">online_prediction</mat-icon>
+</div>
+
+<div fxLayoutAlign="center center" fxLayout="row" *ngIf="!isOnline">
+    <mat-spinner class="status-spinner" diameter="35"></mat-spinner>
+</div>
