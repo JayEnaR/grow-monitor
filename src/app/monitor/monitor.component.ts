@@ -35,13 +35,13 @@ export class MonitorComponent implements OnInit, AfterViewInit {
       if (isOnline) {
 
         // Temperature
-        this._mqttService.observeRetained('E9564F1C-3845-4955-BAEC-E39FBF3D613A', { qos: 2 }).subscribe((m: IMqttMessage) => {
+        this._mqttService.observeRetained('', { qos: 2 }).subscribe((m: IMqttMessage) => {
           this.temperature = m.payload.toString();
           this.update_Temp_Hum_Data();
         });
 
         // Humidity
-        this._mqttService.observeRetained('424178CD-B52E-42C2-ACF2-F0B7C71A14FD', { qos: 2 }).subscribe((m: IMqttMessage) => {
+        this._mqttService.observeRetained('', { qos: 2 }).subscribe((m: IMqttMessage) => {
           this.humidity = m.payload.toString();
           this.update_Temp_Hum_Data();
         });
