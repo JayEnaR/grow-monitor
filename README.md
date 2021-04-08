@@ -1,2 +1,2 @@
 # grow-monitor
-Monitor temperatures and humidity
+A front-end web app to display temperatures and humidity data via MQTT
