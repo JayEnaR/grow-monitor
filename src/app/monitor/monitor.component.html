@@ -21,6 +21,17 @@
             <label class="humidity humidity-color">{{humidity}}%</label>
         </mat-card-content>
     </mat-card>
+
+    <mat-card fxFlex="100" class="fan-container" matTooltip="Toggle fan on/off" routerLink="/config">
+        <mat-card-header>
+            <mat-card-title>Fan</mat-card-title>
+            <mat-icon>air</mat-icon>
+            <!-- <mat-card-subtitle>Temperature</mat-card-subtitle> -->
+        </mat-card-header>
+        <mat-card-content fxLayoutAlign="center">
+            <span class="fan">Off</span>
+        </mat-card-content>
+    </mat-card>
 </div>
 
 <div fxLayoutAlign="center center" fxLayout="row">

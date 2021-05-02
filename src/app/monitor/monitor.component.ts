@@ -18,14 +18,19 @@ export class MonitorComponent implements OnInit, AfterViewInit {
   targetData: ITarget[] = Targets;
   temperature: string = "0";
   humidity: string = "0";
-  time_data: string[] = [];
   chart = [];
   timeIntervals: number = 0;
+  maxTimeIntervals: number = 8;
   decimalRounder: DecimalRounder;
+  prevHumMsgId: number = 0;
+  prevTempMsgId: number = 0;
 
   constructor(private _mqttService: MqttService, private _clientStatusService: ClientStatusService) {
     this.decimalRounder = new DecimalRounder();
 
+    // TODO: get the real time the packet was sent and display it in the graph
+    console.log(new Date(4148499 * 1000).toISOString().substr(11, 8));
+     
     // Online Status
     this._mqttService.observeRetained('ESP32_4WIN/status', { qos: 1, rap: false }).subscribe((m: IMqttMessage) => {
       
@@ -35,15 +40,25 @@ export class MonitorComponent implements OnInit, AfterViewInit {
       if (isOnline) {
 
         // Temperature
-        this._mqttService.observeRetained('E9564F1C-3845-4955-BAEC-E39FBF3D613A', { qos: 2 }).subscribe((m: IMqttMessage) => {
-          this.temperature = m.payload.toString();
-          this.update_Temp_Hum_Data();
+        this._mqttService.observeRetained('E9564F1C-3845-4955-BAEC-E39FBF3D613A', { qos: 1 }).subscribe((t: IMqttMessage) => {
+          console.log(t);
+
+          if(!t.dup && t.messageId != this.prevTempMsgId){
+            this.temperature = t.payload.toString();
+            this.update_Temp_Hum_Data();
+            this.prevTempMsgId = t.messageId;
+          }
         });
 
         // Humidity
-        this._mqttService.observeRetained('424178CD-B52E-42C2-ACF2-F0B7C71A14FD', { qos: 2 }).subscribe((m: IMqttMessage) => {
-          this.humidity = m.payload.toString();
-          this.update_Temp_Hum_Data();
+        this._mqttService.observeRetained('424178CD-B52E-42C2-ACF2-F0B7C71A14FD', { qos: 1 }).subscribe((h: IMqttMessage) => {
+          console.log(h);
+
+          if(!h.dup && h.messageId != this.prevHumMsgId){
+            this.humidity = h.payload.toString();
+            this.update_Temp_Hum_Data();
+            this.prevHumMsgId = h.messageId;
+          }
         });
       }
       else{
@@ -55,8 +70,6 @@ export class MonitorComponent implements OnInit, AfterViewInit {
       this._clientStatusService.updateStatus(isOnline);
 
     });
-
-    this.time_data.push(this.getTime());
   }
 
   ngAfterViewInit(): void {
@@ -67,11 +80,14 @@ export class MonitorComponent implements OnInit, AfterViewInit {
   }
 
   update_Temp_Hum_Data(): void {
+    // time stamp
     this.chart[0].data.labels.push(this.getTime());
+    // temp
     this.chart[0].data.datasets[0].data.push(this.temperature);
+    // humid
     this.chart[0].data.datasets[1].data.push(this.humidity);
 
-    if (this.chart[0].data.datasets[0].data.length > 8) {
+    if (this.chart[0].data.datasets[0].data.length > this.maxTimeIntervals) {
       this.chart[0].data.datasets[0].data.shift();
       this.chart[0].data.datasets[1].data.shift();
       this.chart[0].data.labels.shift();
@@ -86,6 +102,8 @@ export class MonitorComponent implements OnInit, AfterViewInit {
     return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
   }
 
+  // TODO: Keep the amount of frames in local storage for when the page navigates or refreshes so it 
+  // does not lose the data
   build_Temp_Hum_Chart(): void {
     let x = new Chart('canvas', {
       type: 'line',

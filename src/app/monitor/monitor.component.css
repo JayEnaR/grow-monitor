@@ -4,8 +4,11 @@
 .humidity-color{
     color:#357EC7;
 }
-.humidity, .temperature{
+.humidity, .temperature, .fan{
     font-size: xx-large;
+}
+.fan-container:hover{
+    cursor: pointer;
 }
 .temperature-wrapper, .humidity-wrapper{
     width:154px;

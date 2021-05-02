@@ -17,12 +17,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ClientStatusComponent } from './shared/client-status/client-status.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ConfigComponent } from './config/config/config.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MonitorComponent,
-    ClientStatusComponent
+    ClientStatusComponent,
+    ConfigComponent
   ],
   imports: [
     BrowserModule,
